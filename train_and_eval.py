@@ -1,6 +1,7 @@
 import numpy as np
 import argparse
 import matplotlib.pyplot as plt
+import os  # Dodano import os
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -33,14 +34,14 @@ def tensor_to_numpy(tensor_img):
 
 def visualize_results_grid(model_name, imgs_te, s_known, imgs_out, s_out, threshold):
     categories = [
-        ("True Positives (OK)", np.where(s_known >= threshold)[0], imgs_te, s_known),
-        ("False Negatives (Błąd)", np.where(s_known < threshold)[0], imgs_te, s_known),
-        ("True Negatives (OK)", np.where(s_out < threshold)[0], imgs_out, s_out),
-        ("False Positives (Błąd)", np.where(s_out >= threshold)[0], imgs_out, s_out)
+        ("True Positives", np.where(s_known >= threshold)[0], imgs_te, s_known),
+        ("False Negatives", np.where(s_known < threshold)[0], imgs_te, s_known),
+        ("True Negatives", np.where(s_out < threshold)[0], imgs_out, s_out),
+        ("False Positives", np.where(s_out >= threshold)[0], imgs_out, s_out)
     ]
 
     fig, axes = plt.subplots(4, 4, figsize=(12, 12))
-    fig.suptitle(f"Przykłady klasyfikacji (4 per kategoria) - Model: {model_name.upper()}", fontsize=16)
+    fig.suptitle(f"Examples - Model: {model_name.upper()}", fontsize=16)
 
     for row_idx, (title, indices, source_imgs, scores) in enumerate(categories):
         selected_indices = np.random.choice(indices, size=min(4, len(indices)), replace=False) if len(
@@ -54,7 +55,7 @@ def visualize_results_grid(model_name, imgs_te, s_known, imgs_out, s_out, thresh
                 ax.imshow(img)
                 ax.set_title(f"Score: {scores[idx]:.3f}", fontsize=8)
             else:
-                ax.text(0.5, 0.5, "Brak danych", ha='center', va='center')
+                ax.text(0.5, 0.5, "No data", ha='center', va='center')
 
             if col_idx == 0:
                 ax.set_ylabel(title, fontsize=10, fontweight='bold')
@@ -62,7 +63,8 @@ def visualize_results_grid(model_name, imgs_te, s_known, imgs_out, s_out, thresh
             ax.set_yticks([])
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f"faces_grid_{model_name}.png")
+    plt.savefig(f"results/faces_grid_{model_name}.png")
+    plt.close()
 
 
 def run_evaluation(model_name, xtr, ytr, xte, xout, imgs_te, imgs_out):
@@ -91,7 +93,9 @@ def run_evaluation(model_name, xtr, ytr, xte, xout, imgs_te, imgs_out):
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Outsider', 'User'])
     disp.plot(cmap='Blues')
     plt.title(f"Confusion Matrix {model_name.upper()} (100 vs 100)")
-    plt.savefig(f"cm_{model_name}.png")
+    # Zmieniono ścieżkę zapisu:
+    plt.savefig(f"results/cm_{model_name}.png")
+    plt.close()
 
     visualize_results_grid(model_name, imgs_te, s_known, imgs_out, s_out, thr)
 
@@ -102,6 +106,8 @@ if __name__ == "__main__":
     parser.add_argument("--min_faces", type=int, default=8)
     parser.add_argument("--features_path", type=str, default="features")
     args = parser.parse_args()
+
+    os.makedirs("results", exist_ok=True)
 
     xtr = np.load(f"{args.features_path}/X_train_feat.npy")
     ytr = np.load(f"{args.features_path}/y_train.npy")
