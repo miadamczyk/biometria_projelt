@@ -113,9 +113,3 @@ Achieved the best EER score (0.0700), offering the most balanced compromise betw
 * **Classification Visualization:**
 ![Faces Grid RF](results/faces_grid_rf.png)
 
-## Installation and Execution
-
-1. Install requirements: `pip install -r requirements.txt`
-2. Generate features: `python f_extraction.py --users 100`
-3. Run evaluation: `python train_and_eval.py`
-
