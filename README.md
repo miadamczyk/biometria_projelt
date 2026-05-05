@@ -3,10 +3,9 @@
 This repository provides a complete pipeline for evaluating biometric face recognition systems using FaceNet (InceptionResnetV1) for feature extraction and various machine learning classifiers for identification and verification tasks.
 
 ### Features
-* Automated Data Pipeline: Splits the LFW dataset into Enrolled (known) users and Outsiders (unknown) to simulate real-world biometric scenarios.
+* Automated Data Pipeline: Splits the LFW dataset into known users and unknown users to simulate real-world biometric scenarios.
 * Deep Feature Extraction: Uses pre-trained FaceNet models (VGGFace2) to generate 512-dimensional embeddings.
-* Biometric Performance Analysis: Calculates metrics such as EER, AUC, Decidability Index ($d'$), and FRR at 1% FAR.
-* Batch Processing: Handles image processing using PyTorch DataLoaders for both CPU and GPU.
+* Biometric Performance Analysis: Calculates metrics such as EER and accuracy, generates confusion matrices.
 
 ## Description of Files
 
@@ -17,12 +16,12 @@ Handles the fetching of the Labeled Faces in the Wild (LFW) dataset. It normaliz
 The core extraction script. It loads the pre-trained `InceptionResnetV1` model and processes the image tensors in batches. It outputs NumPy files (`.npy`) containing the 512D embeddings and corresponding labels into a `features/` directory.
 
 ### `train_and_eval.py`
-The evaluation engine. It trains selected classifiers (SVM, KNN, or Random Forest) on the extracted features and calculates both standard classification accuracy and specialized biometric verification performance. Generates confusion matrices grids showing faces for each category (TP, FN, TN, FP).
+The evaluation engine. It trains selected classifiers (SVM, KNN, or Random Forest) on the extracted features and calculates both standard classification accuracy and specialized biometric verification performance. Generates confusion matrices and grids showing faces for each category (TP, FN, TN, FP).
 
 
 ### Example Run
 
-First, generate the feature embeddings (e.g., for 100 users and ousiders, eatch):
+First, generate the feature embeddings (e.g., for 100 users and outsiders each):
 ```bash
 python f_extraction.py --users 100 --batch_size 64
 ```
@@ -75,32 +74,32 @@ The training and evaluation results provide a comprehensive biometric report:
 
 | Model | EER | Threshold | TP (Access) | TN (Rejection) | FP (Error) | FN (Error) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **SVM** | 0.0750 | 0.077 | 89 | 96 | 4 | 11 |
-| **KNN** | 0.1450 | 0.667 | 98 | 73 | 27 | 2 |
-| **RF** | 0.0700 | 0.180 | 92 | 94 | 6 | 8 |
+| **SVM** | 0.0700 | 0.080 | 90 | 96 | 4 | 10 |
+| **KNN** | 0.1350 | 0.667 | 98 | 75 | 25 | 2 |
+| **RF** | 0.0800 | 0.239 | 89 | 95 | 5 | 11 |
 
 ### Model Analysis
 
 #### 1. Support Vector Machine (SVM)
 The model is characterized by high precision in rejecting unauthorized individuals.
 * **Confusion Matrix:**
-![CM SVM](cm_svm.png)
+![CM SVM](results/cm_svm.png)
 * **Classification Visualization:**
-![Faces Grid SVM](faces_grid_svm.png)
+![Faces Grid SVM](results/faces_grid_svm.png)
 
 #### 2. K-Nearest Neighbors (KNN)
 At the EER threshold, the KNN model showed very high sensitivity (few FN errors), but at the cost of a higher number of false acceptances (FP).
 * **Confusion Matrix:**
-![CM KNN](cm_knn.png)
+![CM KNN](results/cm_knn.png)
 * **Classification Visualization:**
-![Faces Grid KNN](faces_grid_knn.png)
+![Faces Grid KNN](results/faces_grid_knn.png)
 
 #### 3. Random Forest (RF)
-Achieved the best EER score (*.0700), offering the most balanced compromise between security and user convenience.
+Achieved the best EER score (0.0700), offering the most balanced compromise between security and user convenience.
 * **Confusion Matrix:**
-![CM RF](cm_rf.png)
+![CM RF](results/cm_rf.png)
 * **Classification Visualization:**
-![Faces Grid RF](faces_grid_rf.png)
+![Faces Grid RF](results/faces_grid_rf.png)
 
 ## Installation and Execution
 
