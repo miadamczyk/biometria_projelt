@@ -84,7 +84,10 @@ The training and evaluation results provide a comprehensive biometric report:
 The model is characterized by high precision in rejecting unauthorized individuals.
 * **Confusion Matrix:**
 
-![CM SVM](results/cm_svm.png)
+<div align="center">
+    <img src="results/cm_svm.png" width="700">
+</div>
+
 * **Classification Visualization:**
 ![Faces Grid SVM](results/faces_grid_svm.png)
 
@@ -92,7 +95,10 @@ The model is characterized by high precision in rejecting unauthorized individua
 At the EER threshold, the KNN model showed very high sensitivity (few FN errors), but at the cost of a higher number of false acceptances (FP).
 * **Confusion Matrix:**
 
-![CM KNN](results/cm_knn.png)
+<div align="center">
+    <img src="results/cm_knn.png" width="700">
+</div>
+
 * **Classification Visualization:**
 ![Faces Grid KNN](results/faces_grid_knn.png)
 
@@ -100,7 +106,10 @@ At the EER threshold, the KNN model showed very high sensitivity (few FN errors)
 Achieved the best EER score (0.0700), offering the most balanced compromise between security and user convenience.
 * **Confusion Matrix:**
 
-![CM RF](results/cm_rf.png)
+<div align="center">
+    <img src="results/cm_rf.png" width="700">
+</div>
+
 * **Classification Visualization:**
 ![Faces Grid RF](results/faces_grid_rf.png)
 
