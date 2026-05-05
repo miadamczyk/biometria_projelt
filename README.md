@@ -83,6 +83,7 @@ The training and evaluation results provide a comprehensive biometric report:
 #### 1. Support Vector Machine (SVM)
 The model is characterized by high precision in rejecting unauthorized individuals.
 * **Confusion Matrix:**
+
 ![CM SVM](results/cm_svm.png)
 * **Classification Visualization:**
 ![Faces Grid SVM](results/faces_grid_svm.png)
@@ -90,6 +91,7 @@ The model is characterized by high precision in rejecting unauthorized individua
 #### 2. K-Nearest Neighbors (KNN)
 At the EER threshold, the KNN model showed very high sensitivity (few FN errors), but at the cost of a higher number of false acceptances (FP).
 * **Confusion Matrix:**
+
 ![CM KNN](results/cm_knn.png)
 * **Classification Visualization:**
 ![Faces Grid KNN](results/faces_grid_knn.png)
@@ -97,6 +99,7 @@ At the EER threshold, the KNN model showed very high sensitivity (few FN errors)
 #### 3. Random Forest (RF)
 Achieved the best EER score (0.0700), offering the most balanced compromise between security and user convenience.
 * **Confusion Matrix:**
+
 ![CM RF](results/cm_rf.png)
 * **Classification Visualization:**
 ![Faces Grid RF](results/faces_grid_rf.png)
